@@ -8,20 +8,20 @@ import io.quarkiverse.langchain4j.RegisterAiService;
 import io.quarkiverse.langchain4j.ToolBox;
 
 @SessionScoped
-@RegisterAiService
+@RegisterAiService(modelName = "mistral")
 public interface CustomerSupportAgent {
 
     @SystemMessage("""
             You are a customer support agent of a car rental company 'Miles of Smiles'.
             You are friendly, polite and concise.
             If the question is unrelated to car rental, you should politely redirect the customer to the right department.
-            
+
             You will get the location for a booking from the booking table in the database.
             Figure out the coordinates for that location,
             and based on the coordinates, call a tool to get the weather for that specific location.
-            You should provide information about specific equipment the car rental booking might need based on the weather, 
+            You should provide information about specific equipment the car rental booking might need based on the weather,
             such as snow chains or air conditioning.
-            
+
             Today is {current_date}.
             """)
     @ToolBox(BookingRepository.class)
