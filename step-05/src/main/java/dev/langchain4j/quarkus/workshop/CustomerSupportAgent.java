@@ -6,7 +6,7 @@ import io.smallrye.mutiny.Multi;
 import jakarta.enterprise.context.SessionScoped;
 
 @SessionScoped
-@RegisterAiService
+@RegisterAiService(modelName = "mistral")
 public interface CustomerSupportAgent {
 
     @SystemMessage("""

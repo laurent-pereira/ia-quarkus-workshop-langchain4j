@@ -14,8 +14,11 @@ import dev.langchain4j.rag.content.Content;
 import dev.langchain4j.rag.content.injector.ContentInjector;
 import dev.langchain4j.rag.content.retriever.EmbeddingStoreContentRetriever;
 import dev.langchain4j.store.embedding.EmbeddingStore;
+import org.jboss.logging.Logger;
 
 public class RagRetriever {
+
+    private static final Logger LOG = Logger.getLogger(RagRetriever.class);
 
     @Produces
     @ApplicationScoped
@@ -31,10 +34,12 @@ public class RagRetriever {
                 .contentInjector(new ContentInjector() {
                     @Override
                     public UserMessage inject(List<Content> list, ChatMessage chatMessage) {
-                        StringBuffer prompt = new StringBuffer(((UserMessage)chatMessage).singleText());
+                        StringBuffer prompt = new StringBuffer(((UserMessage) chatMessage).singleText());
                         prompt.append("\nPlease, only use the following information:\n");
                         list.forEach(content -> prompt.append("- ").append(content.textSegment().text()).append("\n"));
-                        return new UserMessage(prompt.toString());
+                        String promptStr = prompt.toString();
+                        LOG.infof("Prompt RAG généré : %s", promptStr);
+                        return new UserMessage(promptStr);
                     }
                 })
                 .build();
